@@ -22,9 +22,14 @@ All CLI operations call Feishu cloud APIs over HTTPS. To run any command beyond 
 
 Without these credentials, the build/test/lint cycle works fully, but actual API commands will fail.
 
+### Hello world verification
+
+To verify credentials work end-to-end: `./bin/feishu-cli doc create --title "Test"`. A successful response returns a document ID and link.
+
 ### Gotchas
 
 - Go 1.21+ is required (`go.mod` specifies `go 1.21`). The VM has Go 1.22.2.
 - The project has no hot-reload mechanism; after code changes, rebuild with `make build`.
 - Tests in `internal/client/` take ~12 seconds due to HTTP retry/timeout tests; this is normal.
 - `make lint` requires `golangci-lint` which is not pre-installed; use `go vet ./...` as the baseline lint check.
+- `doc import` with `--verbose` shows a 3-phase pipeline; table filling (phase 2) can take 10+ seconds per table due to API latency — this is expected behavior, not a bug.
